@@ -413,9 +413,8 @@ DECLARE_FUNC(boolberry) {
 }
 
 DECLARE_FUNC(yespower_0_5_R8G) {
-    DECLARE_SCOPE;
 
-    if (args.Length() < 1)
+    if (info.Length() < 1)
         RETURN_EXCEPT("You must provide one argument.");
 
     Local<Object> target = Nan::To<Object>(info[0]).ToLocalChecked();
@@ -435,9 +434,8 @@ DECLARE_FUNC(yespower_0_5_R8G) {
 }
 
 DECLARE_FUNC(yespower_sugar) {
-    DECLARE_SCOPE;
 
-    if (args.Length() < 1)
+    if (info.Length() < 1)
         RETURN_EXCEPT("You must provide one argument.");
 
     Local<Object> target = Nan::To<Object>(info[0]).ToLocalChecked();
