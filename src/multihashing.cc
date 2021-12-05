@@ -124,8 +124,8 @@ using namespace v8;
  DECLARE_CALLBACK(x15, x15_hash, 32);
  DECLARE_CALLBACK(x16r, x16r_hash, 32);
  DECLARE_CALLBACK(x16rv2, x16rv2_hash, 32);
+ DECLARE_CALLBACK(yescrypt, yescrypt_hash, 32);
  
- DECLARE_NO_INPUT_LENGTH_CALLBACK(yescrypt, yescrypt_hash, 32);
  DECLARE_NO_INPUT_LENGTH_CALLBACK(yespower, yespower_hash, 32);
  DECLARE_NO_INPUT_LENGTH_CALLBACK(yespower_0_5_R8, yespower_0_5_R8_hash, 32);
  DECLARE_NO_INPUT_LENGTH_CALLBACK(yespower_0_5_R16, yespower_0_5_R16_hash, 32);
