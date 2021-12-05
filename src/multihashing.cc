@@ -37,6 +37,7 @@ extern "C" {
     #include "neoscrypt.h"
     #include "crypto/argon2/argon2.h"
     #include "crypto/yescrypt/yescrypt.h"
+    #include "yespower/yespower.h"
 }
 
 #include "boolberry.h"
@@ -105,6 +106,14 @@ using namespace v8;
  DECLARE_CALLBACK(x16r, x16r_hash, 32);
  DECLARE_CALLBACK(x16rv2, x16rv2_hash, 32);
  DECLARE_CALLBACK(yescrypt, yescrypt_hash, 32);
+ DECLARE_CALLBACK(yespower, yespower_hash, 32);
+ DECLARE_CALLBACK(yespower_0_5_R8, yespower_0_5_R8_hash, 32);
+ DECLARE_CALLBACK(yespower_0_5_R16, yespower_0_5_R16_hash, 32);
+ DECLARE_CALLBACK(yespower_0_5_R24, yespower_0_5_R24_hash, 32);
+ DECLARE_CALLBACK(yespower_0_5_R32, yespower_0_5_R32_hash, 32);
+ DECLARE_CALLBACK(yespower_ltncg, yespower_ltncg_hash, 32);
+ DECLARE_CALLBACK(yespower_r16, yespower_r16_hash, 32);
+
 
 DECLARE_FUNC(argon2d) {
     if (info.Length() < 4)
@@ -384,6 +393,50 @@ DECLARE_FUNC(boolberry) {
     SET_BUFFER_RETURN(output, 32);
 }
 
+DECLARE_FUNC(yespower_0_5_R8G) {
+    DECLARE_SCOPE;
+
+    if (args.Length() < 1)
+        RETURN_EXCEPT("You must provide one argument.");
+
+    Local<Object> target = Nan::To<Object>(info[0]).ToLocalChecked();
+
+    if (!Buffer::HasInstance(target))
+        RETURN_EXCEPT("Argument should be a buffer object.");
+
+
+    char* input = Buffer::Data(target);
+    uint32_t input_len = Buffer::Length(target);
+    char output[32];
+
+
+    yespower_0_5_R8G_hash(input, input_len, output);
+
+    SET_BUFFER_RETURN(output, 32);
+}
+
+DECLARE_FUNC(yespower_sugar) {
+    DECLARE_SCOPE;
+
+    if (args.Length() < 1)
+        RETURN_EXCEPT("You must provide one argument.");
+
+    Local<Object> target = Nan::To<Object>(info[0]).ToLocalChecked();
+
+    if (!Buffer::HasInstance(target))
+        RETURN_EXCEPT("Argument should be a buffer object.");
+
+
+    char* input = Buffer::Data(target);
+    uint32_t input_len = Buffer::Length(target);
+    char output[32];
+
+    yespower_sugar_hash(input, output, input_len);
+
+    SET_BUFFER_RETURN(output, 32);
+}
+
+
 NAN_MODULE_INIT(init) {
     NAN_EXPORT(target, argon2d);
     NAN_EXPORT(target, argon2i);
@@ -422,6 +475,15 @@ NAN_MODULE_INIT(init) {
     NAN_EXPORT(target, x16rv2);
     NAN_EXPORT(target, neoscrypt);
     NAN_EXPORT(target, yescrypt);
+    NAN_EXPORT(target, yespower);
+    NAN_EXPORT(target, yespower_0_5_R8);
+    NAN_EXPORT(target, yespower_0_5_R8G);
+    NAN_EXPORT(target, yespower_0_5_R16);
+    NAN_EXPORT(target, yespower_0_5_R24);
+    NAN_EXPORT(target, yespower_0_5_R32);
+    NAN_EXPORT(target, yespower_sugar);
+    NAN_EXPORT(target, yespower_ltncg);
+    NAN_EXPORT(target, yespower_r16);
 }
 
 NAN_MODULE_WORKER_ENABLED(multihashing, init);

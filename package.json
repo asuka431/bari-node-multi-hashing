@@ -32,7 +32,9 @@
         "blake",
         "shavite",
         "fugue",
-        "sha1"
+        "sha1",
+        "yescrypt",
+        "yespower"
     ],
     "devDependencies": {
         "babel-register": "^6.26.0",

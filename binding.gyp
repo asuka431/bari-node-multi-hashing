@@ -75,6 +75,8 @@
                 "src/neoscrypt.c",
                 "src/crypto/yescrypt/yescrypt-best.c",
                 "src/crypto/yescrypt/yescryptcommon.c",
+                "src/yespower/yespower.c",
+                "src/yespower/yespower-opt.c"
             ],
             "include_dirs": [
                 "src/crypto",
