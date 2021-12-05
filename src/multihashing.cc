@@ -79,6 +79,25 @@ using namespace v8;
     SET_BUFFER_RETURN(output, output_len); \
 }
 
+#define DECLARE_NO_INPUT_LENGTH_CALLBACK(name, hash, output_len) \
+    DECLARE_FUNC(name) { \
+ \
+    if (info.Length() < 1) \
+        RETURN_EXCEPT("You must provide one argument."); \
+ \
+    Local<Object> target = Nan::To<Object>(info[0]).ToLocalChecked(); \
+ \
+    if(!Buffer::HasInstance(target)) \
+        RETURN_EXCEPT("Argument should be a buffer object."); \
+ \
+    char * input = Buffer::Data(target); \
+    char output[32]; \
+ \
+    hash(input, output); \
+ \
+    SET_BUFFER_RETURN(output, output_len); \
+}
+
  DECLARE_CALLBACK(bcrypt, bcrypt_hash, 32);
  DECLARE_CALLBACK(blake, blake_hash, 32);
  DECLARE_CALLBACK(c11, c11_hash, 32);
@@ -105,15 +124,15 @@ using namespace v8;
  DECLARE_CALLBACK(x15, x15_hash, 32);
  DECLARE_CALLBACK(x16r, x16r_hash, 32);
  DECLARE_CALLBACK(x16rv2, x16rv2_hash, 32);
- DECLARE_CALLBACK(yescrypt, yescrypt_hash, 32);
- DECLARE_CALLBACK(yespower, yespower_hash, 32);
- DECLARE_CALLBACK(yespower_0_5_R8, yespower_0_5_R8_hash, 32);
- DECLARE_CALLBACK(yespower_0_5_R16, yespower_0_5_R16_hash, 32);
- DECLARE_CALLBACK(yespower_0_5_R24, yespower_0_5_R24_hash, 32);
- DECLARE_CALLBACK(yespower_0_5_R32, yespower_0_5_R32_hash, 32);
- DECLARE_CALLBACK(yespower_ltncg, yespower_ltncg_hash, 32);
- DECLARE_CALLBACK(yespower_r16, yespower_r16_hash, 32);
-
+ 
+ DECLARE_NO_INPUT_LENGTH_CALLBACK(yescrypt, yescrypt_hash, 32);
+ DECLARE_NO_INPUT_LENGTH_CALLBACK(yespower, yespower_hash, 32);
+ DECLARE_NO_INPUT_LENGTH_CALLBACK(yespower_0_5_R8, yespower_0_5_R8_hash, 32);
+ DECLARE_NO_INPUT_LENGTH_CALLBACK(yespower_0_5_R16, yespower_0_5_R16_hash, 32);
+ DECLARE_NO_INPUT_LENGTH_CALLBACK(yespower_0_5_R24, yespower_0_5_R24_hash, 32);
+ DECLARE_NO_INPUT_LENGTH_CALLBACK(yespower_0_5_R32, yespower_0_5_R32_hash, 32);
+ DECLARE_NO_INPUT_LENGTH_CALLBACK(yespower_ltncg, yespower_ltncg_hash, 32);
+ DECLARE_NO_INPUT_LENGTH_CALLBACK(yespower_r16, yespower_r16_hash, 32);
 
 DECLARE_FUNC(argon2d) {
     if (info.Length() < 4)
